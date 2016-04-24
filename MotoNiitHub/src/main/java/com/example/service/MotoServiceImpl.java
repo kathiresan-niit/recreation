@@ -13,28 +13,42 @@ import com.example.model.Motorola;
 @Transactional
 public class MotoServiceImpl implements MotoService
 {
-
+	@Autowired	
+	    private MotoDao mdao;
 	
-	@Autowired
-    private MotoDao MotorolaDAO;
+	@Override
+	public void addProd(Motorola team) {
+		mdao.addProd(team);
+	}
+	
+	@Override
+	public void updateProd(Motorola Prod) {
+		mdao.updateProd(Prod);
+		
+	}
+	
+	@Override
+	public Motorola getProd(int id) {
+		
+		return mdao.getProd(id);
+		
+	}
+	
+	@Override
+	public void deleteProd(int id) {
+		mdao.deleteProd(id);
 
-    public long createMotorola(Motorola Motorola) {
-        return MotorolaDAO.createMoto(Motorola);
-    }
-    public Motorola updateMotorola(Motorola Motorola) {
-        return MotorolaDAO.updateMoto(Motorola);
-    }
-    public void deleteMotorola(Integer id) {
-        MotorolaDAO.deleteMotorola(id);
-    }
-    public List<Motorola> getAllMotorolas() {
-        return MotorolaDAO.getAllMotorolas();
-    }
-    public Motorola getMotorola(Integer id) {
-        return MotorolaDAO.getMotorola(id);
-    }    
-  //  @Override
-//    public List<Motorola> getAllMotorolas(String MotorolaName) {
-//        return MotorolaDAO.getAllMotorolas(MotorolaName);
-//    }
+		
+	}
+	
+	@Override
+	public List<Motorola> getAllProd() {
+		System.out.println("serv impl "+mdao);
+		System.out.println(mdao.getAllProd().get(0).getPrice()+"in serv");
+		return mdao.getAllProd();
+
+	}
+			
+
 }
+

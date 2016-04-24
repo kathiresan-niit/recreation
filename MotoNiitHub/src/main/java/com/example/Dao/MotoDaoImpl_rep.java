@@ -2,64 +2,71 @@ package com.example.Dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.example.Util.Hibutil;
 import com.example.model.Motorola;
+
+
+
 
 @Repository
 public class MotoDaoImpl_rep implements MotoDao{
 
-	@Autowired
-    private Hibutil hibernateUtil;
+	@Autowired(required=true)
+	private SessionFactory sf;
 
-	public long createMoto(Motorola moto) {
-		       
-	        return (Long) hibernateUtil.create(moto);
-	    }
+	private Session getCurrentSession() 
+	{
 	
-
-	public Motorola updateMoto(Motorola moto) {
-			return hibernateUtil.update(moto);
+		return sf.openSession();
 	}
 
-	public void deleteMotorola(Integer id) {
-		
-		 Motorola Motorola = new Motorola();
-	        Motorola.setPid(id);
-	        hibernateUtil.delete(Motorola);
-		
-	}
-
-	public List<Motorola> getAllMotorolas() {
-		return hibernateUtil.fetchAll(Motorola.class);
-	}
-
-	public Motorola getMotorola(Integer id) {
-		
-		return hibernateUtil.fetchById(id, Motorola.class);
-	}
-/*
 	@Override
-	public List<Motorola> getAllMotorolas(String MotorolaName) {
-		String query = "SELECT e.* FROM Motorola e WHERE e.name like '%"+ MotorolaName +"%'";
-        List<Object[]> MotorolaObjects = hibernateUtil.fetchAll(query);
-        List<Motorola> Motorolas = new ArrayList<Motorola>();
-        for(Object[] MotorolaObject: MotorolaObjects) {
-            Motorola Motorola = new Motorola();
-            Integer id = ((Integer) MotorolaObject[0]).intValue();         
-            Integer age = (Integer) MotorolaObject[1];
-            String name = (String) MotorolaObject[2];
-            Integer price = (Integer) MotorolaObject[3];
-            Motorola.setPid(id);
-            Motorola.setPname(name);
-            Motorola.setCategory("moto");
-            Motorola.setAvail(5);
-            Motorolas.add(Motorola);
-        }
-        System.out.println(Motorolas);
-        return Motorolas;
+	public void addProd(Motorola team) {
+		
+		sf.getCurrentSession().save(team);
+
 	}
-*/
+
+	@Override
+	public void updateProd(Motorola Prod) {
+		Motorola updobj = getProd(Prod.getPid());
+		
+		updobj.setPname(Prod.getPname());
+		updobj.setCategory(Prod.getCategory());
+		updobj.setDescription(Prod.getDescription());
+		updobj.setAvail(Prod.getAvail());
+		updobj.setSubcategory(Prod.getSubcategory());
+		updobj.setImgpath(Prod.getImgpath());
+		        getCurrentSession().update(updobj);
+	}
+
+	@Override
+	public Motorola getProd(int id) {
+		Motorola team = (Motorola) getCurrentSession().get(Motorola.class, id);
+		return team;
+	}
+
+	@Override
+	public void deleteProd(int id) {
+		Motorola team = getProd(id);
+		      if (team != null)
+		             getCurrentSession().delete(team);
+
+	}
+
+	@Override
+	public List<Motorola> getAllProd() {
+		//Transaction t=getCurrentSession().beginTransaction();
+		List<Motorola> l= getCurrentSession().createQuery("from Motorola").list();
+		//t.commit();
+		System.out.println("---- ga pr"+l.get(0).getDescription());
+		return l;
+			//System.out.println();
+	}
+
 }

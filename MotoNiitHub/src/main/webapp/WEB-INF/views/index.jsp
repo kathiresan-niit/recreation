@@ -183,7 +183,7 @@
     <div class="container-fluid"  ">
   <div class="row">
     <div class="col-sm-3" style="background-color:rgba(255,255,255,0.9);">
-     <a href="get"> <img src="<c:url value='/resources/images/002.jpg'/>"/></a>
+     <a href="adminLandingpage"> <img src="<c:url value='/resources/images/002.jpg'/>"/></a>
     </div>
     <div class="col-sm-1"></div>
     <div class="col-sm-4" style="background-color:rgba(255,255,255,0.9);">
