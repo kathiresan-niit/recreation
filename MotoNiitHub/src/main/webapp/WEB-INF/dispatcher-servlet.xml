@@ -1,23 +1,26 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:util="http://www.springframework.org/schema/util"
 xmlns:context="http://www.springframework.org/schema/context"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xmlns:mvc="http://www.springframework.org/schema/mvc"
 xmlns:tx="http://www.springframework.org/schema/tx"
-xsi:schemaLocation="
+xsi:schemaLocation="http://www.springframework.org/schema/util 
+http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 http://www.springframework.org/schema/mvc
-http://www.springframework.org/schema/mvc/spring-mvc.xsd
+http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-3.0.xsd
-http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+http://www.springframework.org/schema/context/spring-context-4.0.xsd
+http://www.springframework.org/schema/tx 
+http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 	<context:component-scan base-package="com.example"/>
-	<mvc:default-servlet-handler/>
+		<mvc:default-servlet-handler/>
  	  <mvc:annotation-driven/>
  	  <tx:annotation-driven/>
  	  <mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
-	<bean
-			class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+ 	  
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 			        <property name="viewClass"  
             value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix">
@@ -25,6 +28,24 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="suffix">
 			<value>.jsp</value>
+		</property>
+	</bean>
+	<!-- Production implementation of the JavaMailSender interface, supporting 
+		both JavaMail MimeMessages and Spring SimpleMailMessages -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com"/>
+		<property name="port" value="587"/>
+		<property name="username" value="kathirkathir2006"/><!-- Provide your Gmail ID -->
+		<property name="password" value="kathiresan9629"/><!-- Provide your Gmail Password -->
+ 
+		<!-- The name of the property, following JavaBean naming conventions -->
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
 		</property>
 	</bean>
 </beans>

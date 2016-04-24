@@ -26,11 +26,11 @@
 <tr>
 <c:forEach var="team" items="${team}"> 
 
-	<td>${team.getpid()}</td>
+	<td>${team.pid}</td>
 	<td>${team.avail}</td>
 	<td>${team.category}</td>
 	<td>${team.description}</td>
-	<td>${team.getPid}</td>
+	<td>${team.imgpath}</td>
 	<td>${team.pname}</td>
 	<td>${team.price}</td>
 	<td>${team.subcategory}</td>

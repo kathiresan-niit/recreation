@@ -11,6 +11,9 @@
 <h1>Home page</h1>
 <p>
 ${message}<br>
+<c:if test="${not empty error}">
+                   <div class="error" style="color: #ff0000 ;">${error}</div>
+               </c:if>
 <a href="${pageContext.request.contextPath}/team/add">Add new team</a><br>
 <a href="${pageContext.request.contextPath}/team/list">Team list</a><br>
 </p>

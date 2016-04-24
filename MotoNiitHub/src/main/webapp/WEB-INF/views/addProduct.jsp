@@ -9,7 +9,9 @@
 <body>
 <h1>Add team page</h1>
 <p>Here you can add a new team.</p>
-<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/add/process">
+
+		
+<form:form method="POST"  enctype="multipart/form-data" commandName="team" action="${pageContext.request.contextPath}/team/add/process">
 <table>
 <tbody>
 	<tr>
@@ -35,6 +37,11 @@
 	<tr>
 		<td>price :</td>
 		<td><form:input path="price"></form:input></td>
+	</tr>
+	<tr>
+	<td>Upload image: </td>
+	<td><input type="file" name="f"/></td>
+	
 	</tr>
 	<tr>
 		<td><input value="Add" type="submit"></td>

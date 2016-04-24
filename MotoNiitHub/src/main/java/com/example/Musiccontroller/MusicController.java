@@ -1,18 +1,29 @@
 package com.example.Musiccontroller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.model.Motorola;
 import com.example.service.MotoService;
+import com.example.service.MotoServiceImpl;
 
 @Controller
 public class MusicController {
@@ -34,21 +45,50 @@ public class MusicController {
 		return modelAndView;
 	}
 	@RequestMapping(value="/team/add/process")
-	public ModelAndView addingTeam(@ModelAttribute Motorola team) {
-
-		ModelAndView modelAndView = new ModelAndView("adminLandingpage");
-		mservice.addProd(team); 
-
-		String message = "Team was successfully added.";
+	public @ResponseBody ModelAndView addingTeam(@ModelAttribute Motorola team,HttpServletRequest request) {
+		
+		/*
+		 * adding image path and image
+		 * 
+		 * */
+		String filename=null;
+        System.out.println("in processs img");
+        ServletContext context=request.getServletContext();
+        String path=context.getRealPath("./resources/upload.jpg");
+        System.out.println("Path = "+path);
+        System.out.println("File name = "+team.getF().getOriginalFilename());
+        File f=new File(path);
+       String ret="";
+       String message = "";
+        if (!team.getF().isEmpty()) {
+            try {
+                filename = team.getF().getOriginalFilename();
+                byte[] bytes = team.getF().getBytes();
+                BufferedOutputStream buffStream =new BufferedOutputStream(new FileOutputStream(f));
+                buffStream.write(bytes);
+                buffStream.close();
+                team.setImgpath(path);
+                mservice.addProd(team);
+                message="Team was successfully added.";
+                ret ="adminLandingpage";
+            } catch (Exception e) {
+            	ret ="error";
+                message="excep";
+            }
+        } else {
+        	ret ="error";
+        	message="error uploading";
+            //return "Unable to upload. File is empty.";
+        }
+		ModelAndView modelAndView = new ModelAndView(ret);
 		modelAndView.addObject("message", message);
-
 		return modelAndView;
 	}
 
 	@RequestMapping(value="/team/list")
 	public ModelAndView listOfTeams() {
 		ModelAndView modelAndView = new ModelAndView("ListProducts");
-
+		SendEmail("n.kathiresan@niit.com","n.kathiresan@niit.com","hi","hello");
 		List<Motorola> teams = mservice.getAllProd();
 System.out.println(teams.size()+" "+teams.get(0).getCategory());
 		modelAndView.addObject("team", teams);
@@ -84,5 +124,18 @@ System.out.println(teams.size()+" "+teams.get(0).getCategory());
 		modelAndView.addObject("message", message);
 		return modelAndView;
 	}
+	@Autowired
+	private static MailSender cm; // MailSender interface defines a strategy
+	// for sending simple mails
+
+public static void  SendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+System.out.println("mail "+cm);
+SimpleMailMessage mail= new SimpleMailMessage();
+mail.setFrom(fromAddress);
+mail.setTo(toAddress);
+mail.setSubject(subject);
+mail.setText(msgBody);
+cm.send(mail);
+}
 }
 

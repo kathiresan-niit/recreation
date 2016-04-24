@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Entity
 public class Motorola implements Serializable
 {
@@ -25,6 +27,17 @@ private String description;
 private String category;
 private String subcategory;
 private Integer price;
+private transient MultipartFile f;
+
+public MultipartFile getF() {
+	return f;
+}
+public void setF(MultipartFile f) {
+	this.f = f;
+}
+public void setPrice(Integer price) {
+	this.price = price;
+}
 public Integer getPrice() {
 	return price;
 }
