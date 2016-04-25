@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE webflow PUBLIC "-//SPRING//DTD WEBFLOW//EN"
+
+        "http://www.springframework.org/dtd/spring-webflow.dtd">
+
+<webflow id="bookticket" start-state="productdetailinfo">
+
+	<action-state id="productdetailinfo">
+
+		<action bean="Motorola" method="bindAndValidate" />
+
+		<transition on="success" to="availableShows" />
+
+		<transition on="error" to="tryAgain" />
+
+	</action-state>
+
+	<action-state id="availableShows">
+
+		<action bean="bookingActions" />
+
+		<transition on="success" to="displayShowTimings" />
+
+	</action-state>
+
+	<view-state id="displayShowTimings" view="showTimings">
+
+		<transition on="startOver" to="cancel" />
+
+		<transition on="select" to="selectShow" />
+
+	</view-state>
+
+	<action-state id="selectShow">
+
+		<action bean="bookingActions" />
+
+		<transition on="success" to="isPersonalInfoRequired" />
+
+	</action-state>
+
+	<decision-state id="isPersonalInfoRequired">
+
+		<if test="${requestScope.person == null}" then="enterPersonalInformation" />
+
+		<if test="${requestScope.person.preferences.alwaysConfirmPersonalInfo}"
+
+			then="enterPersonalInformation" else="displayReservationVerification" />
+
+	</decision-state>
+
+	<subflow-state id="enterPersonalInformation" flow="person">
+
+		<attribute-mapper>
+
+			<input value="${requestScope.person.id}" as="personId" />
+
+		</attribute-mapper>
+
+		<transition on="finish" to="displayReservationVerification" />
+
+	</subflow-state>
+
+	<view-state id="displayReservationVerification" view="reservationVerification">
+
+		<transition on="startOver" to="cancel" />
+
+		<transition on="assignSeats" to="chooseSeatAssignments" />
+
+		<transition on="book" to="book" />
+
+	</view-state>
+
+	<subflow-state id="chooseSeatAssignments" flow="seatAssignments">
+
+		<attribute-mapper>
+
+			<input value="${requestScope.person.id}" as="personId" />
+
+			<input name="show" />
+
+		</attribute-mapper>
+
+		<transition on="finish" to="displayReservationVerification" />
+
+	</subflow-state>
+
+	<action-state id="book">
+
+		<action bean="bookingActions" />
+
+		<transition on="success" to="displayConfirmation" />
+
+	</action-state>
+
+	<end-state id="displayConfirmation" view="reservationConfirmation" />
+
+	<end-state id="tryAgain" view="tryAgain" />
+
+	<end-state id="cancel" view="home" />
+
+</webflow>

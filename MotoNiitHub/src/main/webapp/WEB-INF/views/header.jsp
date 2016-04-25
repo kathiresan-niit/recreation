@@ -1,40 +1,71 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
-  <script src="resources/jquery-1.12.3.min.js"></script>
-  <script src="resources/js/bootstrap.min.js"></script>
-  
-<nav class="navbar navbar-inverse" style="margin-left: 34px; vertical-align: middle;">
-  <div class="container-fluid" style="padding-bottom: 5%; margin-left:5%;">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#"><img class="img-thumbnail img-responsive" style="margin:4px;height:60px;width:80px;" src="resources/logo/logo.png"/></a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Page 1-1</a></li>
-            <li><a href="#">Page 1-2</a></li>
-            <li><a href="#">Page 1-3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Page 2</a></li>
-        <li><a href="#">Page 3</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="regUser"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="adminLogin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul>
-    </div>
-  </div>
-  </div>
-</nav>
+<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<!-- styles for project -->
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="<c:url value='resources/bootstrap/css/bootstrap.min.css'/>" />
+<link rel="stylesheet"
+	href="<c:url value='resources/bootstrap/css/style.css'/>" />
+<script src=<c:url value='"resources/js/jquery-1.12.3.min.js'/>"></script>
+<script src="<c:url value='resources/js/bootstrap.min.js'/>" /></script>
+<script>
+                function formSubmit() {
+                    document.getElementById("logoutForm").submit();
+                }
+          </script>
+        <c:url value="/perform_logout" var="logoutUrl" />
+        <form action="${logoutUrl}" method="post" id="logoutForm">
+            <input type="hidden" name="${_csrf.parameterName}"
+                value="${_csrf.token}" />
+        </form>
+<nav class="navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#myNavbar">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<span> <a class="navbar-brand" href="#">logo</a>
+			</span>
+		</div>
+		<div class="collapse navbar-collapse" id="myNavbar">
+					
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">Home</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Projects</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><span><li><s:if
+								test="${pageContext.request.userPrincipal.name != null}">
+								<h6>
+									Welcome : ${pageContext.request.userPrincipal.name} 
+									
+<%-- 									<security:authentication var="user" --%>
+<%-- 										property="principal.authorities" /> --%>
 
+									<security:authorize var="loggedIn" access="isAuthenticated()">										<security:authorize access="hasRole('ROLE_ADMIN')">
+									Admin <a href="${pageContext.request.contextPath}/logout"> Logout</a>
+	        					</security:authorize>
+
+										<security:authorize access="hasRole('ROLE_ADMIN')">
+									User
+	        					</security:authorize>
+									</security:authorize>
+								</h6>
+							</s:if></span></li>
+								<c:if test="${pageContext.request.userPrincipal.name == null}">
+				<li><a href="<c:url value='/userRegister'/>"> <span
+						class="glyphicon glyphicon-user"></span> Join with Us</li>
+				</a>
+				<li> <a href="<c:url value='/login'/>"><span
+						class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						</c:if>
+			</ul>
+		</div>
+	</div>
+</nav>

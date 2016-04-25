@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.Dao.MotoDao;
+import com.example.model.Customer;
 import com.example.model.Motorola;
 
 @Service
@@ -25,6 +26,7 @@ public class MotoServiceImpl implements MotoService
 	
 	@Override
 	public void updateProd(Motorola Prod) {
+		System.out.println("in upd motoservice "+Prod.getPid());
 		mdao.updateProd(Prod);
 		
 	}
@@ -42,7 +44,6 @@ public class MotoServiceImpl implements MotoService
 
 		
 	}
-	
 	@Override
 	public List<Motorola> getAllProd() {
 		System.out.println("serv impl "+mdao);
@@ -51,7 +52,17 @@ public class MotoServiceImpl implements MotoService
 
 	}
 	
-	
+	@Override
+	public List<Motorola> getAllProd(String cat) {
+		System.out.println("serv impl "+mdao);
+		System.out.println(mdao.getAllProd(cat).get(0).getPrice()+"in serv");
+		return mdao.getAllProd(cat);
 
+	}
+	
+	public void addProd(Customer c)
+	{
+		
+	}
 }
 

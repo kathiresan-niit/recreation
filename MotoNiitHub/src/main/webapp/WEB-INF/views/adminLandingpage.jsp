@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<%@include file="header.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
@@ -15,7 +16,7 @@ ${message}<br>
                    <div class="error" style="color: #ff0000 ;">${error}</div>
                </c:if>
 <a href="${pageContext.request.contextPath}/team/add">Add new team</a><br>
-<a href="${pageContext.request.contextPath}/team/list">Team list</a><br>
+<a href="${pageContext.request.contextPath}/team/list/all">Team list</a><br>
 </p>
 </body>
 </html>

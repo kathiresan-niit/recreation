@@ -6,17 +6,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+
 </head>
 <body>
-<h1>Edit team page</h1>
-<p>Here you can edit the existing team.</p>
+<%@include file="header.jsp" %>
+<h1>Edit moto 	page</h1>
+<p>edit</p>
 <p>${message}</p>
-<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/edit/${team.id}">
+<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/edit/${team.pid}">
 <table>
 <tbody>
+<tr>
+		<td>product Id:</td>
+		<td><form:input path="pid" readonly="true"></form:input></td>
+	</tr>
+
 	<tr>
 		<td>product Name:</td>
-		<td><form:input path="pname"></form:input></td>
+		<td><form:input path="pname" value="${team.pname}"></form:input></td>
 	</tr>
 	<tr>
 		<td>available:</td>
@@ -36,7 +43,7 @@
 	</tr>
 	<tr>
 		<td>price :</td>
-		<td><form:input path="price"></form:input></td>
+		<td><form:input path="price" value="${team.price}"></form:input></td>
 	</tr>
 
 	<tr>
