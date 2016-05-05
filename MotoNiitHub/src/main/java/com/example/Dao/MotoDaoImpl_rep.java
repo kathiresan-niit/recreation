@@ -60,7 +60,13 @@ public class MotoDaoImpl_rep implements MotoDao{
 	public void deleteProd(int id) {
 		Motorola team = getProd(id);
 		      if (team != null)
-		             getCurrentSession().delete(team);
+		      {
+		    	  Session session = sf.openSession();
+		    	  System.out.println("in del-mserv");
+		    	  session.delete(team);
+		    	  session.flush();
+		    	     
+		      }
 
 	}
 	
@@ -71,15 +77,18 @@ public class MotoDaoImpl_rep implements MotoDao{
 	@Override
 	public List<Motorola> getAllProd(String cat) {
 		//Transaction t=getCurrentSession().beginTransaction();
+		System.out.println("in get all"+cat);
+		@SuppressWarnings("unchecked")
 		List<Motorola> l= getCurrentSession().createQuery("from Motorola where subcategory='"+cat+"'").list();
 		//t.commit();
-		System.out.println("---- ga pr"+l.get(0).getDescription());
+		System.out.println("---- ga pr"+l);
 		return l;
 			//System.out.println();
 	}
 	
 	public List<Motorola> getAllProd() {
 		//Transaction t=getCurrentSession().beginTransaction();
+		@SuppressWarnings("unchecked")
 		List<Motorola> l= getCurrentSession().createQuery("from Motorola").list();
 		//t.commit();
 		System.out.println("---- in all prod"+l.get(0).getDescription());

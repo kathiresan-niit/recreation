@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Customer {
@@ -12,15 +16,15 @@ public class Customer {
 	private Integer id;
 	private String uname;
 
-	//@NotNull(message = "Please select a password")
-	//@Length(min = 5, max = 10, message = "Password should be between 5 - 10 charactes")
+	@NotNull(message = "Please select a password")
+	@Length(min = 5, max = 10, message = "Password should be between 5 - 10 charactes")
 	private String pass;
 
-	//@NotNull(message="Please select a password")
-	//@Length(min=5, max=10, message="Password should be between 5 - 10 charactes")
+	@NotNull(message="Please select a password")
+	@Length(min=5, max=10, message="Password should be between 5 - 10 charactes")
 	private String cpassword;
 
-	//@Pattern(regexp = ".+@.+\\..+", message = "Wrong email!")
+	@Pattern(regexp = ".+@.+\\..+", message = "Wrong email!")
 	private String mail;
 
 	public String getUname() {

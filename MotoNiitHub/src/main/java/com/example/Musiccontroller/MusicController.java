@@ -7,6 +7,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -65,13 +67,13 @@ public class MusicController {
 	public @ResponseBody ModelAndView addingTeam(@ModelAttribute Motorola team, HttpServletRequest request) {
 
 		/*
-		 * adding image path and image
-		 * 
+		 * adding image path and image system 
+		 * 		 * 
 		 */
 		String filename = null;
 		System.out.println("in processs img");
 		ServletContext context = request.getServletContext();
-		String path = context.getRealPath("./resources/upload.jpg");
+		String path = context.getRealPath("/resources/upload.jpg");
 		System.out.println("Path = " + path);
 		System.out.println("File name = " + team.getF().getOriginalFilename());
 		File f = new File(path);
@@ -108,7 +110,7 @@ public class MusicController {
 		// SendEmail("n.kathiresan@niit.com", "n.kathiresan@niit.com", "hi",
 		// "hello");
 		List<Motorola> teams = mservice.getAllProd(catog);
-		System.out.println(teams.size() + " " + teams.get(0).getCategory());
+		System.out.println("in list meth"+teams.size() + " " + teams.get(0).getCategory());
 		modelAndView.addObject("team", teams);
 
 		return modelAndView;
@@ -116,7 +118,8 @@ public class MusicController {
 
 	@RequestMapping(value = "/team/list/all")
 	public ModelAndView listOfTeams() {
-		ModelAndView modelAndView = new ModelAndView("ListProducts");
+		Path p=Paths.get("../../error").normalize();
+		ModelAndView modelAndView = new ModelAndView(p.toString());
 		// SendEmail("n.kathiresan@niit.com", "n.kathiresan@niit.com", "hi",
 		// "hello");
 		List<Motorola> teams = mservice.getAllProd();
@@ -134,12 +137,17 @@ public class MusicController {
 		modelAndView.addObject("team", team);
 		return modelAndView;
 	}
+	
+	/*
+	 * this method is to handle the post request from edit page 
+	 * @path variable is used to get values from url
+	 * */
 
 	@RequestMapping(value = "/team/edit/{id}", method = RequestMethod.POST)
 	public ModelAndView edditingTeam(@ModelAttribute Motorola team, @PathVariable Integer id) {
 
 		ModelAndView modelAndView = new ModelAndView("anonymous");
-		System.out.println("uuu "+team.getPrice());
+		System.out.println("uuu " + team.getPrice());
 		mservice.updateProd(team);
 
 		String message = "Team was successfully edited.";
@@ -152,85 +160,16 @@ public class MusicController {
 	public ModelAndView deleteTeam(@PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("anonymous");
 		mservice.deleteProd(id);
+		System.out.println("in del");
 		String message = "Team was successfully deleted.";
 		modelAndView.addObject("message", message);
 		return modelAndView;
 	}
 
-	/*
-	 * 
-	 * send mail the pwd to user dynamic pwd
-	 */
-	@Autowired
-	private MailSender cm; // MailSender interface defines a strategy
-	// for sending simple mails
-
-	@RequestMapping("/sendmail")
-	public ModelAndView SendEmail(@RequestParam("mailid") String m) {
-		ModelAndView mv = new ModelAndView("anonymous");
-		System.out.println("mail " + cm);
-		String toAddress = m;
-		String fromAddress = "kathirkathir2006@gmail.com";
-		String subject = "hi";
-		String msgBody = "hi hello";
-		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setFrom(fromAddress);
-		mail.setTo(toAddress);
-		mail.setSubject(subject);
-		mail.setText(msgBody);
-		cm.send(mail);
-
-		// ModelAndView modelAndView = new ModelAndView("header");
-		mv.addObject("message1", "subscribed ");
-
-		return mv;
+	@RequestMapping("/toflow")
+	public String toFlow()
+	{
+		System.out.println("in flow");
+		return "redirect:/checkout?shop="+"shop";
 	}
-
-	@RequestMapping("/generateQr")
-	public ModelAndView generateQR() {
-		ModelAndView mv = new ModelAndView("anonymous");
-		String myCodeText = "Welcome to my world";
-		String filePath = "C:/Users/Kathir/Desktop/kk/CrunchifyQR.png";
-		int size = 250;
-		String fileType = "png";
-		File myFile = new File(filePath);
-		try {
-
-			Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
-			hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-
-			// Now with zxing version 3.2.1 you could change border size (white
-			// border size to just 1)
-			hintMap.put(EncodeHintType.MARGIN, 1); /* default = 4 */
-			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-
-			QRCodeWriter qrCodeWriter = new QRCodeWriter();
-			BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
-			int CrunchifyWidth = byteMatrix.getWidth();
-			BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth, BufferedImage.TYPE_INT_RGB);
-			image.createGraphics();
-
-			Graphics2D graphics = (Graphics2D) image.getGraphics();
-			graphics.setColor(Color.WHITE);
-			graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
-			graphics.setColor(Color.BLACK);
-
-			for (int i = 0; i < CrunchifyWidth; i++) {
-				for (int j = 0; j < CrunchifyWidth; j++) {
-					if (byteMatrix.get(i, j)) {
-						graphics.fillRect(i, j, 1, 1);
-					}
-				}
-			}
-			ImageIO.write(image, fileType, myFile);
-		} catch (WriterException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		mv.addObject("message2", "QR CODE SCAN GOT ,USE it to view MY gallery");
-		System.out.println("\n\nYou have successfully created QR Code.");
-		return mv;
-	}
-
 }

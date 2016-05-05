@@ -4,8 +4,11 @@
     footer {
       background-color: #989898;
       padding: 25px;
+      
     }
 </style>
+<br><br><br><br><br><br><br><br>
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
+  <p>@copyrights 2016</p>
+  
 </footer>

@@ -3,17 +3,21 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc 
          http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
          http://www.springframework.org/schema/beans 
-         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
          http://www.springframework.org/schema/context 
          http://www.springframework.org/schema/context/spring-context-4.0.xsd
          http://www.springframework.org/schema/tx 
-         http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+         http://www.springframework.org/schema/tx/spring-tx.xsd
          http://www.springframework.org/schema/security 
-         http://www.springframework.org/schema/security/spring-security.xsd">                  
-<!-- hibernate db context -->
+         http://www.springframework.org/schema/security/spring-security-4.0.xsd
+         http://www.springframework.org/schema/webflow-config
+         http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+
+	<!-- hibernate db context -->
 	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<beans:property name="driverClassName" value="org.h2.Driver" />
@@ -29,9 +33,8 @@
 	</beans:bean>
 	<!-- <context:annotation-config/> -->
 	<context:component-scan base-package="com.example" />
-
 	<!-- Hibernate 4 SessionFactory Bean definition -->
-	
+
 	<beans:bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<!-- <beans:property name="configLocation"> <beans:value>WEB-INF/application-context.xml</beans:value> 
@@ -52,40 +55,39 @@
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-
 	<!-- <tx:annotation-driven transaction-manager="transactionManager"/> -->
-
-
 	<beans:bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<beans:property name="sessionFactory" ref="sessionFactory" />
 	</beans:bean>
-	<!-- spring work flow -->
 	
-	
-	
-	<!-- spring security code -->	
+   
+	<!-- spring security code -->
 	<security:http auto-config="true" use-expressions="true">
 		<!-- <security:intercept-url pattern="/**" access="hasRole('admin')" /> -->
 		<!-- <security:intercept-url pattern="/*" access="isAnonymous()" /> -->
 		<security:intercept-url pattern="/login/**"
 			access="hasRole('ROLE_USER')" />
-	<security:intercept-url pattern="/login/**"
+		<security:intercept-url pattern="/login/**"
 			access="hasRole('ROLE_ADMIN')" />
 		<security:form-login login-page='/adminLogin'
 			default-target-url="/login" authentication-failure-url="/error?error=true"
 			username-parameter="username" password-parameter="password" />
-		<security:logout logout-success-url="/index" />
+		<security:logout logout-success-url="/index"
+			invalidate-session="true" delete-cookies="JSESSIONID" />
+		<!-- <security:csrf disbled="true"></security:csrf> -->
+
 	</security:http>
-<!-- 		<security:authentication-manager> -->
-<!-- 		<security:authentication-provider> -->
-<!-- 			<security:jdbc-user-service -->
-<!-- 				data-source-ref="dataSource" -->
-<!-- 				users-by-username-query="select uname,pass from customer where uname=?" -->
-<!-- 				authorities-by-username-query="select u1.username, u2.role from customer u1, user_authorization u2 where u1.id = u2.user_id and u1.uname =?" /> -->
-<!-- 		</security:authentication-provider> -->
-<!-- 	</security:authentication-manager> -->
-<!-- </beans:beans>  -->
+	<!-- <security:authentication-manager> -->
+	<!-- <security:authentication-provider> -->
+	<!-- <security:jdbc-user-service -->
+	<!-- data-source-ref="dataSource" -->
+	<!-- users-by-username-query="select uname,pass from customer where uname=?" -->
+	<!-- authorities-by-username-query="select u1.username, u2.role from customer 
+		u1, user_authorization u2 where u1.id = u2.user_id and u1.uname =?" /> -->
+	<!-- </security:authentication-provider> -->
+	<!-- </security:authentication-manager> -->
+	<!-- </beans:beans> -->
 	<security:authentication-manager>
 		<security:authentication-provider>
 			<security:jdbc-user-service
@@ -94,4 +96,20 @@
 				authorities-by-username-query="select u1.username, u2.role from user_authentication u1, user_authorization u2 where u1.user_id = u2.userid and u1.username =?" />
 		</security:authentication-provider>
 	</security:authentication-manager>
+	 <!-- Webflow -->
+    
+   
+   <webflow:flow-executor id="flowExecutor" flow-registry="flowRegistry"/>
+   <beans:bean id="flowHandlerMapping" class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+   		<beans:property name="flowRegistry" ref="flowRegistry"/>
+   </beans:bean>
+
+   
+   <beans:bean id="flowHandlerAdapter" class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">
+   		<beans:property name="flowExecutor" ref="flowExecutor" />
+   </beans:bean>
+   
+   <webflow:flow-registry id="flowRegistry" base-path="/WEB-INF/flows">
+   		<webflow:flow-location path="/checkout/shopingFlow.xml" id="shop" />
+   </webflow:flow-registry>
 </beans:beans> 

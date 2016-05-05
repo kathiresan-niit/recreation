@@ -6,11 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
-<h1>Add team page</h1>
-<p>Here you can add a new team.</p>
-
-		
+<body>		
 <form:form method="POST"  enctype="multipart/form-data" commandName="team" action="${pageContext.request.contextPath}/team/add/process">
 <table>
 <tbody>
@@ -21,7 +17,7 @@
 	<tr>
 		<td>available:</td>
 		<td><form:input path="avail"></form:input></td>
-	</tr>
+	</tr>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 	<tr>
 		<td>description :</td>
 		<td><form:input path="description"></form:input></td>
@@ -39,9 +35,13 @@
 		<td><form:input path="price"></form:input></td>
 	</tr>
 	<tr>
+	<tr><td>
+	  <input  type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	</td></tr>
+	<tr>
 	<td>Upload image: </td>
 	<td><input type="file" name="f"/></td>
-	
+	  
 	</tr>
 	<tr>
 		<td><input value="Add" type="submit"></td>

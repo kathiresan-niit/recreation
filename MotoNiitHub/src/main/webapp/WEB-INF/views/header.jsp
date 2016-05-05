@@ -8,6 +8,7 @@
 	href="<c:url value='resources/bootstrap/css/bootstrap.min.css'/>" />
 <link rel="stylesheet"
 	href="<c:url value='resources/bootstrap/css/style.css'/>" />
+	
 <script src=<c:url value='"resources/js/jquery-1.12.3.min.js'/>"></script>
 <script src="<c:url value='resources/js/bootstrap.min.js'/>" /></script>
 <script>
@@ -38,6 +39,8 @@
 				<li><a href="#">About</a></li>
 				<li><a href="#">Projects</a></li>
 				<li><a href="#">Contact</a></li>
+				<li><a href="<c:url value='/shop?shop=shop'/>">TOFLOW</a></li>
+<!-- 				<li><a href="shop?shop=shop">TOFLOW</a></li> -->
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><span><li><s:if
@@ -48,12 +51,13 @@
 <%-- 									<security:authentication var="user" --%>
 <%-- 										property="principal.authorities" /> --%>
 
-									<security:authorize var="loggedIn" access="isAuthenticated()">										<security:authorize access="hasRole('ROLE_ADMIN')">
+									<security:authorize var="loggedIn" access="isAuthenticated()">										
+									<security:authorize access="hasRole('ROLE_ADMIN')">
 									Admin <a href="${pageContext.request.contextPath}/logout"> Logout</a>
 	        					</security:authorize>
 
-										<security:authorize access="hasRole('ROLE_ADMIN')">
-									User
+										<security:authorize access="hasRole('ROLE_USER')">
+									User<a href="${pageContext.request.contextPath}/logout"> Logout</a>
 	        					</security:authorize>
 									</security:authorize>
 								</h6>

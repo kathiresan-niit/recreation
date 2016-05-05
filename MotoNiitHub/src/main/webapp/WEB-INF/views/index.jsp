@@ -62,7 +62,7 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-4">
-				<a href="${pageContext.request.contextPath}/team/list/all?cat=moto">
+				<a href="${pageContext.request.contextPath}/team/list?cat=moto">
 					<img src="<c:url value='/resources/images/tm.png'/>"
 					class="img-responsive" style="height: 150px; width: 80%"
 					alt="Image">
@@ -93,12 +93,16 @@
 			</div>
 			<div class="col-sm-4">
 				<div class="well">
-					<form action="<c:url value='/sendmail'/>">
-						<input type="text" name="mailid" style="color: green;">
-						<button type="submit" class="btn-primary">subscribe with
-							us</button>
-					</form>
+					<button type="button" class="btn btn-info" data-toggle="collapse"
+						data-target="#demo">Simple collapsible</button>
 
+					<div id="demo" class="collapse">
+						<form action="<c:url value='/sendmail'/>">
+							<input type="text" name="mailid" style="color: green;">
+							<button type="submit" class="btn-primary">subscribe with
+								us</button>
+						</form>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-4">
@@ -108,7 +112,10 @@
 			</div>
 		</div>
 	</div>
-	<br>
+	<br><br><br><br><br><br><br>
+
+
+
 	<%@include file="Footer.jsp"%>
 </body>
 </html>
