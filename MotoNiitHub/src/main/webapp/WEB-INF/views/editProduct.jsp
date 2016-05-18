@@ -13,7 +13,7 @@
 <h1>Edit moto 	page</h1>
 <p>edit</p>
 <p>${message}</p>
-<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/team/edit/${team.pid}">
+<form:form method="POST" commandName="team" action="${pageContext.request.contextPath}/edit/${team.pid}">
 <table>
 <tbody>
 <tr>

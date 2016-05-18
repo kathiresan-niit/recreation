@@ -62,7 +62,7 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-4">
-				<a href="${pageContext.request.contextPath}/team/list?cat=moto">
+				<a href="${pageContext.request.contextPath}/list?cat=moto">
 					<img src="<c:url value='/resources/images/tm.png'/>"
 					class="img-responsive" style="height: 150px; width: 80%"
 					alt="Image">
@@ -70,7 +70,7 @@
 				<p>Current Project</p>
 			</div>
 			<div class="col-sm-4">
-				<a href="category2"> <img
+				<a href="${pageContext.request.contextPath}/n"> <img
 					src="<c:url value='/resources/images/09.png'/>"
 					class="img-responsive" style="height: 30%; width: 80%" alt="Image"></a>
 				<p>Project 2</p>

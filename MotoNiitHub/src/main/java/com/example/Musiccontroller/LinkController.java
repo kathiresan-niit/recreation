@@ -19,6 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LinkController 
 {
+	@RequestMapping(value="anonymous")
+	public String anonymous()
+	{
+		return "anonymous";
+	}
 
 	@RequestMapping(value="index")
 	public String Landingpage2()
@@ -34,16 +39,16 @@ public class LinkController
 	public String gett(){
 		return "adminLogin";
 	}
-	  @RequestMapping(value="/login")
+	  @RequestMapping(value={"/login","/admin*","/admin"})
 	  public String login(@RequestParam (value="error", required = false) String error,
 	                       @RequestParam (value="logout", required = false) String logout, Model model
 	                       ) {
 		  String ret="";
-		  System.out.println("in admin login");
+		  System.out.println("in admin login"+error);
 	       if(error != null) {
 	    	   ret="error";
 	    	   System.out.println("errrr");
-	           model.addAttribute("error", "Invalid username and password!");
+	           model.addAttribute("err", "Invalid username and password!");
 	       }
 	       else if(error==null){
 	    	   System.out.println("succ");

@@ -90,6 +90,7 @@ body {
 <body>
 <div class="container">
 	<div class="row">
+	<c:if test="${pageContext.request.userPrincipal.name == null}">
 		<form class="form-signin mg-btm" name="loginForm" action="<c:url value='/login'/>" method="POST">
     	<h3 class="heading-desc">
 		Login</h3>
@@ -123,7 +124,7 @@ body {
     		<div class="row">
                 <div class="col-xs-6 col-md-6">
                     <div class="left-section">
-                    <span>${message}</span>
+                    <span>${param.error}</span>
                         <c:if test="${not empty error}">
                    <div class="error" style="color: #ff0000 ;">${error}</div>
                </c:if> 
@@ -134,6 +135,10 @@ body {
             </div>
 		</div>
       </form>
+      </c:if>
+      <c:if test="${pageContext.request.userPrincipal.name != null}">
+      <c:redirect url="/adminLandingpage"></c:redirect>
+      </c:if>
 	</div>
 </div>
 </body>

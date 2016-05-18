@@ -31,6 +31,11 @@
 			<artifactId>spring-web</artifactId>
 			<version>4.2.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>4.2.5.RELEASE</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -68,24 +73,33 @@
 			<artifactId>spring-security-config</artifactId>
 			<version>4.0.0.RELEASE</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
 			<version>4.2.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>4.2.5.RELEASE</version>
+		</dependency>
+
+		<!-- logging -->
+<!-- 	<dependency> -->
+<!-- 		<groupId>log4j</groupId> -->
+<!-- 		<artifactId>log4j</artifactId> -->
+<!-- 		<version>1.2.16</version> -->
+<!-- 	</dependency> -->
+
+<!-- 	<dependency> -->
+<!-- 		<groupId>org.slf4j</groupId> -->
+<!-- 		<artifactId>slf4j-api</artifactId> -->
+<!-- 		<version>1.5.10</version> -->
+<!-- 	</dependency> -->
+
 
 		<!-- spring web flow dependencies -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.5.10</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>spring-webflow</artifactId>
@@ -135,7 +149,11 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -148,16 +166,16 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.2.4.Final</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>javax.el-api</artifactId>
-			<version>2.2.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>javax.el</artifactId>
-			<version>2.2.4</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>javax.el</groupId> -->
+<!-- 			<artifactId>javax.el-api</artifactId> -->
+<!-- 			<version>2.2.4</version> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.glassfish.web</groupId> -->
+<!-- 			<artifactId>javax.el</artifactId> -->
+<!-- 			<version>2.2.4</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator-cdi</artifactId>
@@ -169,7 +187,11 @@
 			<artifactId>core</artifactId>
 			<version>3.2.1</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.4.1</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -178,6 +200,8 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>4.0.1.Final</version>
 			</dependency>
+			<!-- Jackson JSON Processor -->
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -189,8 +213,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>

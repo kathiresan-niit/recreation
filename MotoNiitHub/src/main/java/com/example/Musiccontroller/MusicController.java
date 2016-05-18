@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,73 +64,76 @@ public class MusicController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/team/add/process")
+	@RequestMapping(value = "/process")
 	public @ResponseBody ModelAndView addingTeam(@ModelAttribute Motorola team, HttpServletRequest request) {
 
 		/*
 		 * adding image path and image system 
 		 * 		 * 
 		 */
-		String filename = null;
-		System.out.println("in processs img");
-		ServletContext context = request.getServletContext();
-		String path = context.getRealPath("/resources/upload.jpg");
-		System.out.println("Path = " + path);
-		System.out.println("File name = " + team.getF().getOriginalFilename());
+
+		String ctxpath,rp,path="";
+		rp=request.getRealPath("/");
 		File f = new File(path);
 		String ret = "";
 		String message = "";
 		if (!team.getF().isEmpty()) {
 			try {
-				filename = team.getF().getOriginalFilename();
+				String filename = team.getF().getOriginalFilename();
 				byte[] bytes = team.getF().getBytes();
 				BufferedOutputStream buffStream = new BufferedOutputStream(new FileOutputStream(f));
 				buffStream.write(bytes);
 				buffStream.close();
 				team.setImgpath(path);
 				mservice.addProd(team);
-				message = "Team was successfully added.";
+				message = "product was successfully added.";
+				System.out.println("in add if");
 				ret = "adminLandingpage";
 			} catch (Exception e) {
+				System.out.println("in add else -  catch"+e);
 				ret = "error";
 				message = "excep";
 			}
 		} else {
+			System.out.println("in add else");
 			ret = "error";
 			message = "error uploading";
 			// return "Unable to upload. File is empty.";
 		}
 		ModelAndView modelAndView = new ModelAndView(ret);
+		System.out.println("return val "+ret);
 		modelAndView.addObject("message", message);
 		return modelAndView;
 	}
-
-	@RequestMapping(value = "/team/list")
+	@RequestMapping("/n")
+	 public String disp(){
+		 return "n";
+	 }
+	@RequestMapping(value = "/list")
 	public ModelAndView listOfTeams(@RequestParam("cat") String catog) {
 		ModelAndView modelAndView = new ModelAndView("ListProducts");
 		// SendEmail("n.kathiresan@niit.com", "n.kathiresan@niit.com", "hi",
 		// "hello");
 		List<Motorola> teams = mservice.getAllProd(catog);
-		System.out.println("in list meth"+teams.size() + " " + teams.get(0).getCategory());
+		System.out.println("in list meth"+teams.size() + " " + teams.get(2	).getCategory());
 		modelAndView.addObject("team", teams);
 
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/team/list/all")
+	@RequestMapping(value = "/listall")
 	public ModelAndView listOfTeams() {
-		Path p=Paths.get("../../error").normalize();
-		ModelAndView modelAndView = new ModelAndView(p.toString());
+		ModelAndView modelAndView = new ModelAndView("ListProducts");
 		// SendEmail("n.kathiresan@niit.com", "n.kathiresan@niit.com", "hi",
 		// "hello");
 		List<Motorola> teams = mservice.getAllProd();
-		System.out.println(teams.size() + " " + teams.get(0).getCategory());
+		System.out.println(teams.size() + " " + teams.get(2).getImgpath());
 		modelAndView.addObject("team", teams);
 
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/team/edit/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView editTeamPage(@PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("editProduct");
 		Motorola team = mservice.getProd(id);
@@ -143,33 +147,33 @@ public class MusicController {
 	 * @path variable is used to get values from url
 	 * */
 
-	@RequestMapping(value = "/team/edit/{id}", method = RequestMethod.POST)
-	public ModelAndView edditingTeam(@ModelAttribute Motorola team, @PathVariable Integer id) {
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+	public String edditingTeam(@ModelAttribute Motorola team, @PathVariable Integer id) {
 
-		ModelAndView modelAndView = new ModelAndView("anonymous");
+		//ModelAndView modelAndView = new ModelAndView("redirect:ListProducts");
 		System.out.println("uuu " + team.getPrice());
 		mservice.updateProd(team);
 
-		String message = "Team was successfully edited.";
-		modelAndView.addObject("message", message);
+		String message = "product was successfully edited.";
+		new ModelMap().addAttribute("message", message);
 
-		return modelAndView;
+		return "redirect:ListProducts";
 	}
 
-	@RequestMapping(value = "/team/delete/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public ModelAndView deleteTeam(@PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("anonymous");
 		mservice.deleteProd(id);
+		//List<Motorola> teams = mservice.getAllProd();
 		System.out.println("in del");
 		String message = "Team was successfully deleted.";
 		modelAndView.addObject("message", message);
+		//modelAndView.addObject("team", teams);
 		return modelAndView;
 	}
 
-	@RequestMapping("/toflow")
-	public String toFlow()
-	{
-		System.out.println("in flow");
-		return "redirect:/checkout?shop="+"shop";
+	@RequestMapping("home")
+	public String home(){
+		return "index";
 	}
 }

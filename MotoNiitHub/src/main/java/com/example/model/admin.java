@@ -2,33 +2,34 @@ package com.example.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name="user_authorization")
+@Entity(name="user_authorize")
 public class admin {
 
-	@Id
-	@GeneratedValue
-	private Integer userid;
 	
-	private Integer userroleid;
+	private Integer user_id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Integer user_role_id;
 	
 	private String role;
 
 	public Integer getUserid() {
-		return userid;
+		return user_id;
 	}
 
 	public void setUserid(Integer userid) {
-		this.userid = userid;
+		this.user_id = userid;
 	}
 
 	public Integer getUserroleid() {
-		return userroleid;
+		return user_role_id;
 	}
 
 	public void setUserroleid(Integer userroleid) {
-		this.userroleid = userroleid;
+		this.user_role_id = userroleid;
 	}
 
 	public String getRole() {

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>		
-<form:form method="POST"  enctype="multipart/form-data" commandName="team" action="${pageContext.request.contextPath}/team/add/process">
+<form:form method="POST"  enctype="multipart/form-data" commandName="team" action="${pageContext.request.contextPath}/process">
 <table>
 <tbody>
 	<tr>

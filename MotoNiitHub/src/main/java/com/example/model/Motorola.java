@@ -1,13 +1,23 @@
 package com.example.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+
+
 
 @Entity
 public class Motorola implements Serializable {
@@ -115,11 +125,25 @@ public class Motorola implements Serializable {
 		this.subcategory = subcategory;
 	}
 
-	public void bindAndValidate(){
+	/*public void bindAndValidate(){
 		
-	}
+	}*/
 	@Override
 	public String toString() {
 		return "Employee{" + "id=" + pid + ", name='" + pname + '\'' + ", avail=" + avail + ", cat=" + category + '}';
 	}
+    
+    @OneToMany(cascade = CascadeType.ALL)//(mappedBy = "item")//, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<UserCart> cartItemList;
+
+	public List<UserCart> getCartItemList() {
+		return cartItemList;
+	}
+
+	public void setCartItemList(List<UserCart> cartItemList) {
+		this.cartItemList = cartItemList;
+	}
+
+    
 }
